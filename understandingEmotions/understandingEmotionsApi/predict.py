@@ -23,6 +23,8 @@ def emotion_rating(probabilitie, emotion_type):
 
 def predict_emotion_for(text, session, tokenizer):
     text_tokens = dict(tokenizer(text, return_tensors='np'))
+    for key in text_tokens:
+        text_tokens[key] = text_tokens[key].astype(np.int64)
     session_output = session.run(None, text_tokens)
     probabilities = softmax(session_output[0])[0]
     emotion_number = probabilities.argmax()
